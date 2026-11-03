@@ -40,19 +40,156 @@
   .display .line { display: block; }
   .split { display: block; }
 
-  /* ---------- Nav ---------- */
-  nav { position: fixed; top: 0; left: 0; right: 0; padding: 30px 24px; z-index: 100; }
-  .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-  .brand { font-weight: 900; font-size: 1.1rem; text-transform: uppercase; letter-spacing: -0.02em; }
+    /* ---------- Nav (Sketchy Nav) ---------- */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    z-index: 101;
+  }
   .brand .fume { color: #c9423a; }
-  .nav-links { display: none; gap: 34px; font-family: ui-monospace, monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; }
-  .nav-links a { color: #4a4a4a; }
-  .nav-links a:hover { color: #0a0a08; }
-  .nav-toggle { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; z-index: 110; }
-  .nav-toggle span { display: block; width: 22px; height: 2px; background: #0a0a08; border-radius: 1px; transition: transform .25s, opacity .25s; }
+
+  /* Sketchy Nav */
+  .sketchy-nav {
+    display: none;
+    align-items: center;
+    gap: 24px;
+    padding: 8px;
+  }
+  .sketchy-nav-item {
+    position: relative;
+    padding: 4px 12px;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    color: #27272a;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .sketchy-nav-item:hover {
+    color: #52525b;
+  }
+  .sketchy-nav-item.active {
+    font-weight: 700;
+    color: #27272a;
+  }
+  .sketchy-nav-item .nav-label {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* The Scribble */
+  .sketchy-scribble {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .sketchy-marker {
+    fill: none;
+    stroke: #FCD34D;
+    stroke-width: 25;
+    stroke-linecap: round;
+    opacity: 0.6;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: sketchyMarkerAnim 0.3s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+  }
+  .sketchy-underline {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: sketchyUnderlineAnim 0.4s ease 0.1s forwards;
+  }
+
+  @keyframes sketchyMarkerAnim {
+    0% { stroke-dashoffset: 1; }
+    100% { stroke-dashoffset: 0; }
+  }
+  @keyframes sketchyUnderlineAnim {
+    0% { stroke-dashoffset: 1; }
+    100% { stroke-dashoffset: 0; }
+  }
+
+  /* Mobile menu toggle */
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 110;
+    padding: 6px;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #0a0a08;
+    border-radius: 1px;
+    transition: transform .25s, opacity .25s;
+  }
+
   @media (min-width: 768px) {
-    .nav-links { display: flex; }
-    .nav-toggle { display: none; }
+    .sketchy-nav {
+      display: flex;
+    }
+    .nav-toggle {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .sketchy-nav.mobile-open {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: fixed;
+      top: 61px;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      padding: 24px 28px;
+      gap: 16px;
+      border-top: 1px solid #e0e0e0;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+    .nav-toggle.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
   }
 
   /* ---------- Marquee ---------- */
@@ -69,23 +206,178 @@
   }
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  /* ---------- Hero ---------- */
-  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 110px 24px 60px; position: relative; }
+    /* ---------- Hero (Prism WebGL Raymarching) ---------- */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    background: #000000;
+    overflow: hidden;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .prism-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+  }
+  .hero-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    color: #ffffff;
+    pointer-events: none;
+    width: 100%;
+    padding: 0 16px;
+  }
+  .prism-title {
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: clamp(4.5rem, 13vw, 11rem);
+    line-height: 1;
+    animation: glowPulse 3s ease-in-out infinite alternate;
+  }
+  .prism-tagline {
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
+  }
+  .prism-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 40px;
+    pointer-events: auto;
+  }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('hero-bg.webp');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.8;
-  z-index: 0;
-}
-  .hero-inner { max-width: 760px; position: relative; z-index: 1; }
-  .hero .kicker { margin-bottom: 20px; color: rgba(255,255,255,0.85); }
-  .hero p { font-size: clamp(1rem, 1.2vw, 1.25rem); color: #ffffff; margin-top: 10px; max-width: 420px; text-shadow: 0 1px 3px rgba(0,0,0,0.35); }
-  .cta-group { margin-top: 44px; display: flex; gap: 16px; flex-wrap: wrap; }
+  @keyframes glowPulse {
+    from {
+      filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.4))
+        drop-shadow(0 0 80px rgba(138, 43, 226, 0.3));
+    }
+    to {
+      filter: drop-shadow(0 0 60px rgba(255, 255, 255, 0.6))
+        drop-shadow(0 0 120px rgba(0, 191, 255, 0.4));
+    }
+  }
+  @keyframes borderFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    100% { transform: translateX(100%) rotate(30deg); }
+  }
+
+  .glass-button {
+    --x: 50%;
+    --y: 50%;
+    position: relative;
+    padding: 16px 40px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    border: 1.5px solid transparent;
+    border-radius: 40px;
+    overflow: hidden;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 40px;
+    padding: 1.5px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(138, 43, 226, 0.4) 25%,
+      rgba(0, 191, 255, 0.4) 50%,
+      rgba(255, 105, 180, 0.4) 75%,
+      rgba(255, 255, 255, 0.4) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: borderFlow 3s linear infinite;
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+  }
+  .glass-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 40px;
+    background: radial-gradient(
+      circle at var(--x, 50%) var(--y, 50%),
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .glass-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 48px rgba(138, 43, 226, 0.3), 0 0 80px rgba(0, 191, 255, 0.2);
+  }
+  .glass-button:hover::before {
+    opacity: 1;
+    animation-duration: 2s;
+  }
+  .glass-button:hover::after {
+    opacity: 1;
+  }
+  .glass-button:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+  .shimmer-effect {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    transform: rotate(30deg);
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 45%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.1) 55%,
+      transparent 100%
+    );
+    animation: shimmer 3s infinite;
+  }
+  .glass-button:hover .shimmer-effect {
+    animation-duration: 1.5s;
+  }
+
+
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
     border: 1px solid #0a0a08; background: transparent; color: #0a0a08;
@@ -95,11 +387,6 @@
   .btn:hover { background: #0a0a08; color: #ffffff; }
   .btn-outline { border-color: #ccc; color: #0a0a08; }
   .btn-outline:hover { border-color: #0a0a08; color: #ffffff; }
-
-  .hero .btn { border-color: #ffffff; color: #ffffff; }
-  .hero .btn:hover { background: #ffffff; color: #0a0a08; }
-  .hero .btn-outline { border-color: rgba(255,255,255,0.6); color: #ffffff; }
-  .hero .btn-outline:hover { border-color: #ffffff; color: #0a0a08; background: #ffffff; }
 
   /* ---------- Services ---------- */
   .section-head { text-align: left; margin-bottom: 60px; max-width: 640px; }
@@ -207,6 +494,137 @@
   /* ---------- Footer ---------- */
   footer { border-top: 1px solid #e0e0e0; padding: 80px 0 40px; }
   .footer-inner { display: flex; flex-direction: column; gap: 10px; font-family: ui-monospace, monospace; font-size: 0.7rem; color: #777; text-transform: uppercase; letter-spacing: 0.2em; }
+
+  /* ---------- ChatForm (Site Inspection) ---------- */
+  .chat-form-card {
+    width: 100%;
+    max-width: 24rem;
+    height: 500px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e7eb;
+    margin-left: auto;
+  }
+  .chat-header {
+    padding: 16px;
+    background: #4f46e5;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .chat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background: #4ade80;
+    border: 2px solid #ffffff;
+    flex-shrink: 0;
+  }
+  .chat-header-info h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .chat-header-info p {
+    font-size: 10px;
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .chat-messages {
+    flex: 1;
+    padding: 16px;
+    background: #f9fafb;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .chat-bubble {
+    max-width: 82%;
+    padding: 12px 14px;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    border-radius: 16px;
+    animation: chatMsgAnim 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes chatMsgAnim {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .chat-bubble-bot {
+    background: #ffffff;
+    color: #1f2937;
+    border-top-left-radius: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    align-self: flex-start;
+  }
+  .chat-bubble-user {
+    background: #4f46e5;
+    color: #ffffff;
+    border-top-right-radius: 0;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    align-self: flex-end;
+  }
+  .chat-form-bar {
+    padding: 8px 12px;
+    background: #ffffff;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid #f3f4f6;
+    align-items: center;
+  }
+  .chat-input, .chat-select {
+    flex: 1;
+    border-radius: 9999px;
+    padding: 10px 16px;
+    font-size: 0.875rem;
+    background: #f3f4f6;
+    border: 1px solid transparent;
+    outline: none;
+    color: #1f2937;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .chat-input:focus, .chat-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+  }
+  .chat-send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: #4f46e5;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, background-color 0.2s;
+  }
+  .chat-send-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    background: #4338ca;
+  }
+  .chat-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
 </style>
 </head>
 <body>
@@ -214,12 +632,25 @@
 <nav>
   <div class="nav-inner container">
     <a href="#" class="brand">fume<span class="fume">.</span></a>
-    <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <div class="sketchy-nav" id="sketchyNav" role="navigation">
+      <a href="#" class="sketchy-nav-item active" data-nav="Home">
+        <span class="nav-label">Home</span>
+        <svg class="sketchy-scribble" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path class="sketchy-marker" d="M-5,50 Q25,40 50,50 T105,50" fill="none" stroke="#FCD34D" stroke-width="25" stroke-linecap="round" pathLength="1" style="opacity: 0.6;"></path>
+          <path class="sketchy-underline" d="M-5,85 Q25,95 50,85 T105,85" fill="none" stroke="black" stroke-width="2" pathLength="1"></path>
+        </svg>
+      </a>
+      <a href="#services" class="sketchy-nav-item" data-nav="Services">
+        <span class="nav-label">Services</span>
+      </a>
+      <a href="#process" class="sketchy-nav-item" data-nav="Process">
+        <span class="nav-label">Process</span>
+      </a>
+      <a href="#contact" class="sketchy-nav-item" data-nav="Contact">
+        <span class="nav-label">Contact</span>
+      </a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -230,17 +661,23 @@
   </div>
 </div>
 
-<section class="hero">
-  <div class="hero-inner container">
-    <span class="kicker">Fumigation &amp; Pest Control</span>
-    <h1 class="display">
-      <span class="line">We clear</span>
-      <span class="line">infestations.</span>
-    </h1>
-    <p>Bedbugs &middot; Cockroaches &middot; Rodents &middot; Flies &middot; Mosquitoes &middot; Other pests.<br>Inspection, treatment, verification — guaranteed.</p>
-    <div class="cta-group">
-      <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book inspection</button>
-      <a href="#services" class="btn btn-outline">View services</a>
+<section class="hero" id="home">
+  <!-- WebGL Raymarching Canvas -->
+  <canvas id="prismCanvas" class="prism-canvas"></canvas>
+
+  <!-- Content Overlay -->
+  <div class="hero-overlay">
+    <h1 class="prism-title">PRISM</h1>
+    <p class="prism-tagline">Spectrum of Light</p>
+    <div class="prism-buttons">
+      <button class="glass-button" id="btnDiscover" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+        <span class="shimmer-effect"></span>
+        <span style="position: relative; z-index: 10;">Discover</span>
+      </button>
+      <button class="glass-button" id="btnJoin" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <span class="shimmer-effect"></span>
+        <span style="position: relative; z-index: 10;">Join Now</span>
+      </button>
     </div>
   </div>
 </section>
@@ -428,18 +865,48 @@
         <p style="margin-top:26px;"><span class="mono" style="display:block;margin-bottom:6px;">Phone</span> <span class="mono">+1 (555) 014-7296</span></p>
         <p><span class="mono" style="display:block;margin-bottom:6px;">Email</span> <span class="mono">hello@fume.control</span></p>
       </div>
-      <form id="contactForm" novalidate>
-        <span class="kicker" style="margin-bottom:10px;">Message</span>
-        <input type="text" name="name" placeholder="Full name" required>
-        <input type="email" name="email" placeholder="Email address" required>
-        <select name="service" required>
-          <option value="">Service needed</option>
-          <option>Bedbugs</option><option>Cockroaches</option><option>Rodents</option>
-          <option>Flies</option><option>Mosquitoes</option><option>Other pests</option><option>General inspection</option>
-        </select>
-        <textarea name="message" placeholder="Address, severity, and any access notes" required></textarea>
-        <button type="submit" class="btn" style="width:fit-content; align-self:flex-start;">Send</button>
-      </form>
+      <div class="chat-form-card" id="chatFormCard">
+        <div class="chat-header">
+          <div class="chat-avatar"></div>
+          <div class="chat-header-info">
+            <h3>Fume Assistant</h3>
+            <p>Online</p>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble chat-bubble-bot">
+            Hey! What's your full name?
+          </div>
+        </div>
+
+        <form id="chatForm" class="chat-form-bar">
+          <input
+            type="text"
+            id="chatInput"
+            class="chat-input"
+            placeholder="Enter your full name..."
+            autocomplete="name"
+            required
+          />
+          <select id="chatSelect" class="chat-select" style="display: none;">
+            <option value="">-- Choose service needed --</option>
+            <option value="Bedbugs">Bedbugs</option>
+            <option value="Cockroaches">Cockroaches</option>
+            <option value="Rodents">Rodents</option>
+            <option value="Flies">Flies</option>
+            <option value="Mosquitoes">Mosquitoes</option>
+            <option value="Other pests">Other pests</option>
+            <option value="General inspection">General inspection</option>
+          </select>
+          <button type="submit" id="chatSendBtn" class="chat-send-btn" aria-label="Send message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </section>
@@ -457,35 +924,555 @@
 
 <script>
   (function () {
-    const toggle = document.getElementById('navToggle');
-    const links = document.querySelector('.nav-links');
-    let open = false;
-    toggle.addEventListener('click', function () {
-      open = !open;
-      links.style.display = open ? 'flex' : 'none';
-      links.style.flexDirection = 'column';
-      links.style.position = 'fixed';
-      links.style.top = '70px';
-      links.style.left = '0';
-      links.style.right = '0';
-      links.style.background = '#ffffff';
-      links.style.padding = '24px';
-      links.style.gap = '20px';
-      links.style.borderTop = '1px solid #e0e0e0';
+        const toggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('sketchyNav');
+    const navItems = document.querySelectorAll('.sketchy-nav-item');
+    const brand = document.querySelector('.brand');
+    let mobileOpen = false;
+
+    function createScribbleSVG() {
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('class', 'sketchy-scribble');
+      svg.setAttribute('viewBox', '0 0 100 100');
+      svg.setAttribute('preserveAspectRatio', 'none');
+
+      const marker = document.createElementNS(svgNS, 'path');
+      marker.setAttribute('class', 'sketchy-marker');
+      marker.setAttribute('d', 'M-5,50 Q25,40 50,50 T105,50');
+      marker.setAttribute('fill', 'none');
+      marker.setAttribute('stroke', '#FCD34D');
+      marker.setAttribute('stroke-width', '25');
+      marker.setAttribute('stroke-linecap', 'round');
+      marker.setAttribute('pathLength', '1');
+      marker.style.opacity = '0.6';
+
+      const underline = document.createElementNS(svgNS, 'path');
+      underline.setAttribute('class', 'sketchy-underline');
+      underline.setAttribute('d', 'M-5,85 Q25,95 50,85 T105,85');
+      underline.setAttribute('fill', 'none');
+      underline.setAttribute('stroke', 'black');
+      underline.setAttribute('stroke-width', '2');
+      underline.setAttribute('pathLength', '1');
+
+      svg.appendChild(marker);
+      svg.appendChild(underline);
+      return svg;
+    }
+
+    function setActiveItem(targetItem, force = false) {
+      if (!targetItem) return;
+      if (targetItem.classList.contains('active') && !force) return;
+
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        const oldSvg = item.querySelector('.sketchy-scribble');
+        if (oldSvg) oldSvg.remove();
+      });
+
+      targetItem.classList.add('active');
+      targetItem.appendChild(createScribbleSVG());
+    }
+
+    let isManualNav = false;
+    let manualTimeout = null;
+
+    navItems.forEach(item => {
+      item.addEventListener('click', function (e) {
+        e.preventDefault();
+        setActiveItem(this, true);
+
+        isManualNav = true;
+        clearTimeout(manualTimeout);
+        manualTimeout = setTimeout(() => { isManualNav = false; }, 850);
+
+        const href = this.getAttribute('href');
+        if (href === '#' || href === '#top') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+
+        if (mobileOpen) {
+          mobileOpen = false;
+          navMenu.classList.remove('mobile-open');
+          toggle.classList.remove('open');
+        }
+      });
     });
 
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(function () { toast.classList.remove('show'); }, 2400);
-      this.reset();
+    if (brand) {
+      brand.addEventListener('click', function (e) {
+        e.preventDefault();
+        const homeItem = document.querySelector('.sketchy-nav-item[data-nav="Home"]');
+        if (homeItem) setActiveItem(homeItem, true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    toggle.addEventListener('click', function () {
+      mobileOpen = !mobileOpen;
+      navMenu.classList.toggle('mobile-open', mobileOpen);
+      toggle.classList.toggle('open', mobileOpen);
     });
+
+    const sections = [
+      { name: 'Home', el: document.querySelector('.hero') || document.body },
+      { name: 'Services', el: document.getElementById('services') },
+      { name: 'Process', el: document.getElementById('process') },
+      { name: 'Contact', el: document.getElementById('contact') }
+    ];
+
+    window.addEventListener('scroll', function () {
+      if (isManualNav) return;
+      const scrollPos = window.scrollY + 140;
+
+      let currentName = 'Home';
+      sections.forEach(sec => {
+        if (sec.el && scrollPos >= sec.el.offsetTop) {
+          currentName = sec.name;
+        }
+      });
+
+      const currentItem = document.querySelector('.sketchy-nav-item[data-nav="' + currentName + '"]');
+      if (currentItem && !currentItem.classList.contains('active')) {
+        setActiveItem(currentItem);
+      }
+    }, { passive: true });
+
+    
+    // ==========================================
+    // CHAT FORM LOGIC
+    // ==========================================
+    (function initChatForm() {
+      const form = document.getElementById('chatForm');
+      const input = document.getElementById('chatInput');
+      const select = document.getElementById('chatSelect');
+      const sendBtn = document.getElementById('chatSendBtn');
+      const messagesContainer = document.getElementById('chatMessages');
+      if (!form || !messagesContainer) return;
+
+      let currentStep = 0; // 0: Name, 1: Email, 2: Service, 3: Notes, 4: Done
+      const formData = {};
+
+      function addMessage(text, sender) {
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble ' + (sender === 'bot' ? 'chat-bubble-bot' : 'chat-bubble-user');
+        bubble.textContent = text;
+        messagesContainer.appendChild(bubble);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        let value = '';
+
+        if (currentStep === 2) {
+          value = select.value;
+          if (!value) return;
+        } else {
+          value = input.value.trim();
+          if (!value) return;
+        }
+
+        addMessage(value, 'user');
+
+        if (currentStep === 0) {
+          formData.name = value;
+          input.value = '';
+          currentStep = 1;
+          input.type = 'email';
+          input.placeholder = 'Enter your email address...';
+          setTimeout(() => {
+            addMessage('Nice to meet you, ' + value + '! What is your email address?', 'bot');
+          }, 600);
+        } else if (currentStep === 1) {
+          formData.email = value;
+          input.value = '';
+          currentStep = 2;
+          input.style.display = 'none';
+          select.style.display = 'block';
+          select.focus();
+          setTimeout(() => {
+            addMessage('Great! Please select the service needed from the menu below:', 'bot');
+          }, 600);
+        } else if (currentStep === 2) {
+          formData.service = value;
+          select.style.display = 'none';
+          input.style.display = 'block';
+          input.type = 'text';
+          input.value = '';
+          input.placeholder = 'Address, severity, or access notes...';
+          input.focus();
+          currentStep = 3;
+          setTimeout(() => {
+            addMessage('Got it! Any additional notes? (e.g. property address, severity, or access instructions)', 'bot');
+          }, 600);
+        } else if (currentStep === 3) {
+          formData.notes = value;
+          input.value = '';
+          input.disabled = true;
+          sendBtn.disabled = true;
+          input.placeholder = 'Inspection scheduled!';
+          currentStep = 4;
+          setTimeout(() => {
+            addMessage('Thank you! Your site inspection request has been scheduled. Our team will reach out to you shortly.', 'bot');
+            const toast = document.getElementById('toast');
+            if (toast) {
+              toast.textContent = 'Inspection request scheduled!';
+              toast.classList.add('show');
+              setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+          }, 600);
+        }
+      });
+    })();
+
 
     // Pause marquee on hover
     const mq = document.getElementById('marquee');
     mq.addEventListener('mouseenter', function () { mq.style.animationPlayState = 'paused'; });
     mq.addEventListener('mouseleave', function () { mq.style.animationPlayState = 'running'; });
+
+    // ==========================================
+    // PRISM WEBGL RAYMARCHING SHADER
+    // ==========================================
+    (function initPrismShader() {
+      const canvas = document.getElementById('prismCanvas');
+      if (!canvas) return;
+
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        console.error('WebGL not supported');
+        return;
+      }
+
+      const vertexShaderSource = `
+        attribute vec2 position;
+        void main() {
+          gl_Position = vec4(position, 0.0, 1.0);
+        }
+      `;
+
+      const fragmentShaderSource = `
+        precision highp float;
+        
+        uniform float uTime;
+        uniform vec2 uResolution;
+        uniform vec2 uMouse;
+        
+        #define PI 3.14159265359
+        #define TAU 6.28318530718
+        #define MAX_STEPS 80
+        #define MAX_DIST 50.0
+        #define SURF_DIST 0.001
+        
+        float hash(float n) {
+          return fract(sin(n) * 43758.5453123);
+        }
+        
+        mat2 rot(float a) {
+          float s = sin(a);
+          float c = cos(a);
+          return mat2(c, -s, s, c);
+        }
+        
+        float sdSphere(vec3 p, float r) {
+          return length(p) - r;
+        }
+        float sdBox(vec3 p, vec3 b) {
+          vec3 q = abs(p) - b;
+          return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+        }
+        
+        float sdOctahedron(vec3 p, float s) {
+          p = abs(p);
+          float m = p.x + p.y + p.z - s;
+          vec3 q;
+          if(3.0 * p.x < m) q = p.xyz;
+          else if(3.0 * p.y < m) q = p.yzx;
+          else if(3.0 * p.z < m) q = p.zxy;
+          else return m * 0.57735027;
+          
+          float k = clamp(0.5 * (q.z - q.y + s), 0.0, s);
+          return length(vec3(q.x, q.y - s + k, q.z - k));
+        }
+        float sdTriPrism(vec3 p, vec2 h) {
+          vec3 q = abs(p);
+          return max(q.z - h.y, max(q.x * 0.866025 + p.y * 0.5, -p.y) - h.x * 0.5);
+        }
+        
+        float smin(float a, float b, float k) {
+          float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+          return mix(b, a, h) - k * h * (1.0 - h);
+        }
+        float smax(float a, float b, float k) {
+          return -smin(-a, -b, k);
+        }
+        
+        float map(vec3 p) {
+          vec3 op = p;
+          
+          vec2 m = (uMouse - 0.5) * 2.5;
+          p.xy += m * 0.4;
+          
+          p.xz *= rot(uTime * 0.12);
+          p.xy *= rot(uTime * 0.08);
+          
+          float d = 100.0;
+          
+          vec3 p1 = p;
+          p1.yz *= rot(uTime * 0.15);
+          
+          float core_distort = sin(p1.x * 3.0 + uTime) * sin(p1.y * 3.0 + uTime) * sin(p1.z * 3.0 + uTime) * 0.1;
+          float core = sdOctahedron(p1, 1.6) + core_distort;
+          
+          vec3 p2 = p1;
+          p2.xy *= rot(PI * 0.25 + uTime * 0.2);
+          float prism = sdTriPrism(p2, vec2(1.4, 2.0));
+          core = smax(core, -prism, 0.2);
+          
+          d = core;
+          
+          float k_blend = 0.2 + 0.15 * (0.5 + 0.5 * sin(uTime * 1.5));
+          
+          for(int i = 0; i < 4; i++) {
+            float fi = float(i);
+            float angle = fi * TAU / 4.0 + uTime * 0.3;
+            
+            float radius = 3.0 + 0.3 * sin(uTime * 0.4 + fi);
+            
+            vec3 pos = vec3(
+              cos(angle) * radius,
+              sin(angle * 0.7) * 1.0,
+              sin(angle) * radius
+            );
+            
+            vec3 po = p - pos;
+            po.xy *= rot(uTime * 0.5 + fi);
+            
+            float sat_distort = sin(po.x * 5.0 + fi) * sin(po.y * 5.0 + fi) * sin(po.z * 5.0 + fi) * 0.05;
+            float satellite = sdOctahedron(po, 0.4) + sat_distort;
+            
+            d = smin(d, satellite, k_blend);
+          }
+          
+          return d;
+        }
+        
+        vec3 getNormal(vec3 p) {
+          vec2 e = vec2(0.001, 0.0);
+          return normalize(vec3(
+            map(p + e.xyy) - map(p - e.xyy),
+            map(p + e.yxy) - map(p - e.yxy),
+            map(p + e.yyx) - map(p - e.yyx)
+          ));
+        }
+        
+        float raymarch(vec3 ro, vec3 rd) {
+          float t = 0.0;
+          for(int i = 0; i < MAX_STEPS; i++) {
+            vec3 p = ro + rd * t;
+            float d = map(p);
+            if(abs(d) < SURF_DIST || t > MAX_DIST) break;
+            t += d * 0.7;
+          }
+          return t;
+        }
+        
+        vec3 getBackground(vec3 rd) {
+          float stars = 0.0;
+          vec3 p = rd * 100.0;
+          float h = hash(dot(p, vec3(12.9898, 78.233, 54.53)));
+          if(h > 0.98) stars = pow(h - 0.98, 10.0) * 20.0;
+          vec3 nebula = vec3(0.0);
+          nebula += vec3(0.3, 0.15, 0.5) * pow(max(0.0, sin(rd.x * 2.0 + uTime * 0.1)), 3.0) * 0.2;
+          nebula += vec3(0.15, 0.3, 0.6) * pow(max(0.0, sin(rd.y * 2.5 + uTime * 0.05)), 3.0) * 0.2;
+          
+          return stars + nebula;
+        }
+        
+        void main() {
+          vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / min(uResolution.x, uResolution.y);
+          
+          vec2 m = (uMouse - 0.5) * 0.5;
+          vec3 ro = vec3(m.x * 2.0, m.y * 2.0, 5.5);
+          vec3 rd = normalize(vec3(uv, -1.0));
+          
+          rd.xy *= rot(m.x * 0.2);
+          rd.yz *= rot(m.y * 0.2);
+          
+          float t = raymarch(ro, rd);
+          
+          vec3 color = vec3(0.0);
+          
+          if(t < MAX_DIST) {
+            vec3 p = ro + rd * t;
+            vec3 normal = getNormal(p);
+            
+            vec3 viewDir = normalize(ro - p);
+            
+            float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.0);
+            
+            float ior = 1.5;
+            vec3 refractDir = refract(rd, normal, 1.0 / ior);
+            
+            if(length(refractDir) > 0.0) {
+              float t2 = raymarch(p - normal * 0.01, refractDir);
+              
+              if(t2 < MAX_DIST) {
+                vec3 p2 = p - normal * 0.01 + refractDir * t2;
+                vec3 normal2 = getNormal(p2);
+                
+                vec3 r = refract(refractDir, -normal2, ior - 0.2);
+                vec3 g = refract(refractDir, -normal2, ior);
+                vec3 b = refract(refractDir, -normal2, ior + 0.2);
+                
+                vec3 bgR = getBackground(r) * vec3(1.4, 0.7, 0.7);
+                vec3 bgG = getBackground(g) * vec3(0.7, 1.4, 0.8);
+                vec3 bgB = getBackground(b) * vec3(0.7, 0.8, 1.4);
+                
+                color = vec3(bgR.x, bgG.y, bgB.z);
+                color = pow(color, vec3(0.7)) * 5.0;
+                
+              } else {
+                color = getBackground(refractDir) * 2.0;
+              }
+            }
+            
+            vec3 lightDir = normalize(vec3(1.0, 1.0, -1.0));
+            vec3 halfDir = normalize(lightDir + viewDir);
+            float spec = pow(max(dot(normal, halfDir), 0.0), 150.0);
+            color += spec * vec3(1.0, 1.0, 1.0) * 3.5;
+            
+            vec3 fresnelColor = vec3(
+              0.5 + 0.5 * sin(fresnel * TAU + uTime),
+              0.5 + 0.5 * sin(fresnel * TAU + uTime + TAU / 3.0),
+              0.5 + 0.5 * sin(fresnel * TAU + uTime + TAU * 2.0 / 3.0)
+            );
+            color += fresnel * fresnelColor * 1.2;
+            
+            float edge = pow(1.0 - abs(dot(viewDir, normal)), 4.0);
+            color += edge * vec3(0.6, 0.7, 1.0) * 0.7;
+            
+            float sss = pow(max(dot(-normal, lightDir), 0.0), 2.0);
+            color += sss * vec3(1.0, 0.6, 0.8) * 0.5;
+            
+          } else {
+            color = getBackground(rd);
+          }
+          
+          float vignette = 1.0 - length(uv) * 0.4;
+          vignette = smoothstep(0.3, 1.0, vignette);
+          color *= vignette;
+          
+          color *= vec3(0.96, 0.99, 1.06);
+          
+          color = pow(color, vec3(0.88));
+          color *= 1.12;
+          
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `;
+
+      function createShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        if (!shader) return null;
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error(gl.getShaderInfoLog(shader));
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      }
+
+      function createProgram(gl, vs, fs) {
+        const prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+          console.error(gl.getProgramInfoLog(prog));
+          gl.deleteProgram(prog);
+          return null;
+        }
+        return prog;
+      }
+
+      const vs = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+      const fsShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+      if (!vs || !fsShader) return;
+      const program = createProgram(gl, vs, fsShader);
+      if (!program) return;
+
+      const uTime = gl.getUniformLocation(program, 'uTime');
+      const uResolution = gl.getUniformLocation(program, 'uResolution');
+      const uMouse = gl.getUniformLocation(program, 'uMouse');
+
+      const positions = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+      const mouse = { x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 };
+
+      function resize() {
+        const hero = canvas.parentElement;
+        canvas.width = hero.clientWidth || window.innerWidth;
+        canvas.height = hero.clientHeight || window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      window.addEventListener('mousemove', function(e) {
+        mouse.targetX = e.clientX / window.innerWidth;
+        mouse.targetY = 1.0 - (e.clientY / window.innerHeight);
+      });
+
+      // Glass button radial hover tracking
+      document.querySelectorAll('.glass-button').forEach(btn => {
+        btn.addEventListener('mousemove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          this.style.setProperty('--x', x + '%');
+          this.style.setProperty('--y', y + '%');
+        });
+      });
+
+      const startTime = Date.now();
+      function renderLoop() {
+        const currentTime = (Date.now() - startTime) * 0.001;
+
+        mouse.x += (mouse.targetX - mouse.x) * 0.05;
+        mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.useProgram(program);
+
+        gl.uniform1f(uTime, currentTime);
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+        gl.uniform2f(uMouse, mouse.x, mouse.y);
+
+        const posLoc = gl.getAttribLocation(program, 'position');
+        gl.enableVertexAttribArray(posLoc);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        requestAnimationFrame(renderLoop);
+      }
+      requestAnimationFrame(renderLoop);
+    })();
+
   })();
 </script>
 </body>
