@@ -41,13 +41,18 @@ export interface ChatFormProps {
 }
 
 const DEFAULT_SERVICES = [
-    "Bedbugs",
-    "Cockroaches",
-    "Rodents",
-    "Flies",
-    "Mosquitoes",
-    "Other pests",
-    "General inspection",
+    "Car Fumigation (KSh 3,000 - was 3,500)",
+    "Indoor Fumigation (KSh 3,000 - was 3,500)",
+    "Outdoor Fumigation (KSh 4,500 - was 5,000)",
+    "Office Fumigation (KSh 4,000 - was 4,500)",
+    "Carpet Deep Cleaning (KSh 950 - was 1,100)",
+    "Sink, Toilet & Bathroom (KSh 700 - was 750)",
+    "General Cleaning - Whole House (KSh 7,000 - was 7,500)",
+    "Home Organization (KSh 3,000 - was 3,500)",
+    "Bed & Mattress Cleaning (KSh 3,500 - was 4,000)",
+    "Sofa Deep Cleaning (KSh 650 - was 700)",
+    "Deep Cleaning - Stain Free Homes (KSh 8,000 - was 8,500)",
+    "Space Fogging (KSh 7,500 - was 8,000)",
 ];
 
 interface Message {
