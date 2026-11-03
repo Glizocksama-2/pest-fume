@@ -491,6 +491,43 @@
     .steps { flex-direction: column; gap: 40px; }
   }
 
+  /* ---------- Mobile Optimizations ---------- */
+  @media (max-width: 768px) {
+    section { padding: 70px 0; }
+    .hero { min-height: 75vh; padding-top: 100px; }
+    .hero-overlay { padding: 0 12px; }
+    .prism-title { font-size: clamp(1.8rem, 10vw, 3.5rem); margin-bottom: 12px; }
+    .prism-tagline { font-size: clamp(0.85rem, 4vw, 1rem); margin-bottom: 20px; }
+    .prism-buttons { flex-direction: column; gap: 10px; }
+    .glass-button { width: 100%; max-width: 260px; }
+    .services-grid { gap: 24px; }
+    .service { padding: 28px 20px; }
+    .service-img { height: 120px; margin-bottom: 12px; }
+    .trust-grid { gap: 20px; }
+    .trust-card { padding: 28px 20px; }
+    .trust-card-img { height: 100px; margin-bottom: 10px; }
+    .gallery-grid { gap: 12px; }
+    .gallery-item img { height: 160px; }
+    .steps { gap: 30px; }
+    .step-num { font-size: clamp(1.5rem, 8vw, 2.5rem); }
+    .section-head h2 { font-size: clamp(1.6rem, 6vw, 2.5rem); }
+    footer { padding: 60px 0 30px; }
+    .footer-inner { gap: 6px; font-size: 0.65rem; }
+    .nav-toggle { padding: 6px; }
+    .nav-toggle span { width: 20px; height: 2px; }
+    #toast { bottom: 20px; left: 10px; right: 10px; transform: none; padding: 12px 20px; font-size: 0.7rem; text-align: center; border-radius: 4px; }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    input, textarea, select { font-size: 16px; } /* prevents iOS zoom on focus */
+    textarea { min-height: 100px; }
+    .marquee span { font-size: clamp(1.2rem, 4vw, 1.8rem); gap: 40px; }
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  @media (max-width: 768px) {
+    html, body { overflow-x: hidden; }
+    .container { padding: 0 16px; }
+  }
+
   /* ---------- Toast ---------- */
   #toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(120px); background: #0a0a08; color: #ffffff; padding: 14px 28px; font-family: ui-monospace, monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; border-radius: 0; transition: transform .35s; z-index: 200; opacity: 0; }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -1644,8 +1681,10 @@
         const hero = canvas.parentElement || document.body;
         const w = hero.clientWidth || window.innerWidth;
         const h = hero.clientHeight || window.innerHeight;
-        // Cap internal resolution to ~720p with CSS smoothing
-        const scale = Math.min(0.7, 720 / Math.max(w, h));
+        // Render at full resolution on desktop, ~720p cap on mobile
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const maxRes = isMobile ? 720 : 1080;
+        const scale = Math.min(1, maxRes / Math.max(w, h));
         canvas.width = Math.max(320, Math.floor(w * scale));
         canvas.height = Math.max(240, Math.floor(h * scale));
         gl.viewport(0, 0, canvas.width, canvas.height);
@@ -1658,12 +1697,26 @@
         mouse.targetY = 1.0 - (e.clientY / window.innerHeight);
       }, { passive: true });
 
+      window.addEventListener('touchmove', function(e) {
+        const t = e.touches[0];
+        mouse.targetX = t.clientX / window.innerWidth;
+        mouse.targetY = 1.0 - (t.clientY / window.innerHeight);
+      }, { passive: true });
+
       // Glass button radial hover tracking
       document.querySelectorAll('.glass-button').forEach(btn => {
         btn.addEventListener('mousemove', function(e) {
           const rect = this.getBoundingClientRect();
           const x = ((e.clientX - rect.left) / rect.width) * 100;
           const y = ((e.clientY - rect.top) / rect.height) * 100;
+          this.style.setProperty('--x', x + '%');
+          this.style.setProperty('--y', y + '%');
+        }, { passive: true });
+        btn.addEventListener('touchmove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const t = e.touches[0];
+          const x = ((t.clientX - rect.left) / rect.width) * 100;
+          const y = ((t.clientY - rect.top) / rect.height) * 100;
           this.style.setProperty('--x', x + '%');
           this.style.setProperty('--y', y + '%');
         }, { passive: true });
