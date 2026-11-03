@@ -425,8 +425,9 @@
         <span class="kicker">Get in touch</span>
         <h3>Schedule a<br>site inspection.</h3>
         <p>Residential · Commercial · Food premises · Multi-unit housing</p>
-        <p style="margin-top:26px;"><span class="mono" style="display:block;margin-bottom:6px;">Phone</span> <span class="mono">+1 (555) 014-7296</span></p>
-        <p><span class="mono" style="display:block;margin-bottom:6px;">Email</span> <span class="mono">hello@fume.control</span></p>
+        <p style="margin-top:26px"><span class="mono" style="display:block;margin-bottom:6px">Location</span> <span class="mono">Ruiru, Kenya</span></p>
+        <p><span class="mono" style="display:block;margin-bottom:6px">Hours</span> <span class="mono">Open 24 hours</span></p>
+        <p><span class="mono" style="display:block;margin-bottom:6px">Phone</span> <span class="mono">0742849387</span></p>
       </div>
       <form id="contactForm" novalidate>
         <span class="kicker" style="margin-bottom:10px;">Message</span>
@@ -474,13 +475,7 @@
       links.style.borderTop = '1px solid #e0e0e0';
     });
 
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(function () { toast.classList.remove('show'); }, 2400);
-      this.reset();
-    });
+    document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(this);const msg=`*New Fume Inspection Request*%0A*Name:* ${f.get('name')}%0A*Email:* ${f.get('email')}%0A*Service:* ${f.get('service')}%0A*Message:* ${f.get('message')}`;window.open(`https://wa.me/254742849387?text=${msg}`,'_blank');const n=document.getElementById('toast');n.classList.add('show');setTimeout(function(){n.classList.remove('show')},2400);this.reset()});
 
     // Pause marquee on hover
     const mq = document.getElementById('marquee');
